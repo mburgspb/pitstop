@@ -5,6 +5,9 @@ import com.example.app.pitstop.api.IncidentDetails;
 import com.example.app.pitstop.api.IncidentId;
 import com.example.app.pitstop.api.OfferDetails;
 import com.example.app.pitstop.api.OfferId;
+import com.example.app.pitstop.commad.CreateIncident;
+import com.example.app.user.authentication.Sender;
+import io.fluxcapacitor.javaclient.FluxCapacitor;
 import io.fluxcapacitor.javaclient.tracking.handling.IllegalCommandException;
 import io.fluxcapacitor.javaclient.web.HandleGet;
 import io.fluxcapacitor.javaclient.web.HandleOptions;
@@ -22,13 +25,20 @@ import java.util.List;
 public class PitStopApi {
 
     @HandlePost("incidents")
-    IncidentId reportIncident(IncidentDetails details) {
-        throw new IllegalCommandException("Not implemented yet");
+    IncidentId reportIncident(IncidentDetails details, Sender sender) {
+        var id = IncidentId.newValue();
+        FluxCapacitor.sendAndForgetCommand(
+                CreateIncident.builder()
+                        .incidentId(id)
+                        .details(details)
+                        .sender(sender)
+        );
+        return id;
     }
 
     @HandleGet("incidents")
     List<Incident> getIncidents() {
-        return List.of();
+        return FluxCapacitor.search(Incident.class).fetchAll();
     }
 
     @HandlePost("incidents/{incidentId}/offers")
