@@ -7,5 +7,5 @@ import jakarta.validation.constraints.NotNull;
 public interface IncidentCommand {
     @RoutingKey
     @NotNull
-    IncidentId getIncidentId();
+    IncidentId incidentId();
 }

@@ -1,18 +1,24 @@
 package com.example.app.pitstop.api;
 
 import com.example.app.user.api.UserId;
+import io.fluxcapacitor.common.search.Facet;
 import io.fluxcapacitor.javaclient.modeling.Aggregate;
+import io.fluxcapacitor.javaclient.modeling.Member;
+import io.fluxcapacitor.javaclient.persisting.search.Searchable;
 import lombok.Builder;
 import lombok.Singular;
 import lombok.Value;
+import lombok.With;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Aggregate(searchable = true)
 @Builder(toBuilder = true)
 @Value
+@Searchable
 public class Incident {
     IncidentId incidentId;
     IncidentDetails details;
@@ -21,8 +27,13 @@ public class Incident {
 
     Instant start, end;
 
-    @Singular
-    List<Offer> offers;
+    @Facet
+    boolean closed;
+
+    @With
+    @Member
+    @Builder.Default
+    List<Offer> offers = new ArrayList<>();
 
     Assistance assistance;
 

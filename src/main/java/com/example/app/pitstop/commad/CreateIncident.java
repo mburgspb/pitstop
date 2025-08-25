@@ -3,27 +3,27 @@ package com.example.app.pitstop.commad;
 import com.example.app.pitstop.api.Incident;
 import com.example.app.pitstop.api.IncidentDetails;
 import com.example.app.pitstop.api.IncidentId;
-import com.example.app.user.authentication.Sender;
+import com.example.app.user.api.UserId;
 import io.fluxcapacitor.javaclient.persisting.eventsourcing.Apply;
 import lombok.Builder;
-import lombok.Value;
 
 import java.time.Instant;
 
-@Value
 @Builder
-public class CreateIncident implements IncidentCommand {
-    IncidentId incidentId;
-    IncidentDetails details;
-    Sender sender;
+public record CreateIncident(
+        IncidentId incidentId,
+        IncidentDetails details,
+        UserId reporterUserId
+) implements IncidentCommand {
 
     @Apply
-    Incident apply() {
+    public Incident apply() {
         return Incident.builder()
                 .incidentId(incidentId)
                 .details(details)
-                .reporter(sender.getUserId())
+                .reporter(reporterUserId)
                 .start(Instant.now())
+                .closed(false)
                 .build();
     }
 }
