@@ -9,20 +9,18 @@ import java.util.List;
 public record FindIncidents(Boolean closed, Integer maxResults) {
     @HandleQuery
     List<Incident> query() {
-//        var stats = FluxCapacitor.search(Incident.class)
-//                .lookAhead("Toyota")
-//                .facetStats();
 
+        // details/location/longitude BigDecimal
+        // closed bool
+        // start
+        // reporter
+
+        // Werkt niet
+        // incidentId/id
+        // incidentId
         var search = FluxCapacitor.search(Incident.class)
-                .sortBy("incidentId", true);
-        if (closed != null) {
-            search = search.match(closed, "closed");
-        }
-        if (maxResults != null) {
-            List<Incident> res = search.fetch(maxResults);
-            return res;
-        }
-        List<Incident> res2 = search.fetchAll();
+                .sortBy("test", false);
+        List<Incident> res2 = search.fetch(100, Incident.class);
         return res2;
     }
 }

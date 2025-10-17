@@ -20,9 +20,10 @@ public record CreateIncident(
     public Incident apply() {
         return Incident.builder()
                 .incidentId(incidentId)
+                .test(Long.valueOf(incidentId.getId()))
                 .details(details)
                 .reporter(reporterUserId)
-                .start(Instant.now())
+                .startAt(Instant.now())
                 .closed(false)
                 .build();
     }

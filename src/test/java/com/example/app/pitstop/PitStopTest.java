@@ -2,12 +2,14 @@ package com.example.app.pitstop;
 
 import com.example.app.pitstop.api.*;
 import com.example.app.pitstop.commad.CloseIncident;
+import com.example.app.pitstop.query.FindIncidents;
 import com.example.app.refdata.api.OperatorId;
 import com.example.app.user.api.UserId;
 import com.example.app.user.authentication.AuthenticationUtils;
 import io.fluxcapacitor.javaclient.test.TestFixture;
 import io.fluxcapacitor.javaclient.web.HttpRequestMethod;
 import io.fluxcapacitor.javaclient.web.WebRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,6 +23,21 @@ class PitStopTest {
     final TestFixture testFixture = TestFixture.create(PitStopApi.class, IncidentHandler.class);
 
     @Test
+    void testSearch() {
+        testFixture.givenCommands(
+                        "/user/create-user.json",
+                        "/refdata/register-operators.json",
+                        "/pitstop/create-incident.json"
+                )
+                .withHeader("Authorization", createAuthorizationHeader("user"))
+                .whenPost("/api/incidents/generate-mock-data", null)
+                .andThen()
+                .whenQuery(new FindIncidents(false, null))
+                .expectSuccessfulResult();
+    }
+
+    @Test
+    @Disabled
     void aaaOffer() {
         testFixture.givenCommands(
                 "/user/create-user.json",

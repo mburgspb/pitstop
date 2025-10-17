@@ -105,7 +105,7 @@ public class PitStopApi {
 
     @HandlePost("incidents/generate-mock-data")
     void generateMockData() {
-        int totalIncidents = 1000;
+        int totalIncidents = 10;
         Random random = new Random();
 
         var operators = FluxCapacitor.queryAndWait(new GetOperators());

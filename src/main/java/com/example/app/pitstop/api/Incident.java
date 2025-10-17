@@ -2,11 +2,11 @@ package com.example.app.pitstop.api;
 
 import com.example.app.user.api.UserId;
 import io.fluxcapacitor.common.search.Facet;
+import io.fluxcapacitor.common.search.Sortable;
 import io.fluxcapacitor.javaclient.modeling.Aggregate;
 import io.fluxcapacitor.javaclient.modeling.Member;
 import io.fluxcapacitor.javaclient.persisting.search.Searchable;
 import lombok.Builder;
-import lombok.Singular;
 import lombok.Value;
 import lombok.With;
 
@@ -21,11 +21,13 @@ import java.util.Optional;
 @Searchable
 public class Incident {
     IncidentId incidentId;
+    Long test;
+
     IncidentDetails details;
 
     UserId reporter;
 
-    Instant start, end;
+    Instant startAt, end;
 
     @Facet
     boolean closed;
